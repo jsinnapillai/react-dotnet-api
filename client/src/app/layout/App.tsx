@@ -5,6 +5,7 @@ import {
   ThemeProvider,
 } from "@mui/material";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
 import Catalog from "../../features/catalog/catalog";
 
@@ -35,7 +36,7 @@ const App = () => {
         handleThemeChange={hanldeThemchangeHandler}
       ></Header>
       <Container>
-        <Catalog />
+        <Outlet />
       </Container>
     </ThemeProvider>
   );

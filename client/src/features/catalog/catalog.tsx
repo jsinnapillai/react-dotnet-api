@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import agent from "../../app/api/agent";
+import React, { useEffect } from "react";
+
 import LoadingComponent from "../../app/layout/LoadingComponenet";
-import { Product } from "../../app/models/products";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { fetchProductsAsync, ProductSelectors } from "./catalogSlice";
 import ProductList from "./ProductList";
 
 const Catalog = () => {
-  const [products, setProduct] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const products = useAppSelector(ProductSelectors.selectAll);
+  const { productsLoaded, status } = useAppSelector((state) => state.catalog);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    agent.Catalog.list()
-      .then((products: Product[]) => setProduct(products))
-      .catch((error: any) => console.log(error))
-      .finally(() => setLoading(false));
-    // .fetch("http://localhost:5000/api/Products")
-    // .then((respose) => respose.json().then((data) => setProduct(data)));
-  }, []);
+    if (!productsLoaded) {
+      dispatch(fetchProductsAsync());
+    }
+  }, [productsLoaded, dispatch]);
 
-  if (loading) return <LoadingComponent message="Loading" />;
+  if (status.includes("pending")) return <LoadingComponent message="Loading" />;
 
   return (
     <React.Fragment>

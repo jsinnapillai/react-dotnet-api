@@ -13,12 +13,14 @@ import StoreProvider, { StoreContext } from "./app/context/StoreContext";
 
 import { Provider } from "react-redux";
 import { store } from "./app/store/configureStore";
+import { fetchProductsAsync } from "./features/catalog/catalogSlice";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
 // const store = configureStore();
+store.dispatch(fetchProductsAsync());
 // console.log(store.getState());
 
 root.render(
